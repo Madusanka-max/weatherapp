@@ -1,0 +1,58 @@
+<div class="weather-container">
+  <mat-card class="weather-card">
+    <mat-card-header>
+      <mat-card-title>Weather Dashboard</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="weatherForm" (ngSubmit)="onSubmit()" class="search-form">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Enter City Name</mat-label>
+          <input matInput formControlName="city" placeholder="e.g., London">
+          <mat-error *ngIf="weatherForm.get('city')?.hasError('required')">
+            City name is required
+          </mat-error>
+          <mat-error *ngIf="weatherForm.get('city')?.hasError('minlength')">
+            City name must be at least 2 characters
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="weatherForm.invalid || loading">
+          <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+          <span *ngIf="!loading">Search</span>
+        </button>
+      </form>
+
+      <div *ngIf="error" class="error-message">
+        <mat-icon>error</mat-icon>
+        {{ error }}
+      </div>
+
+      <div *ngIf="weatherData" class="weather-info">
+        <div class="weather-header">
+          <h2>{{ weatherData.city }}</h2>
+          <img [src]="weatherData.icon" [alt]="weatherData.condition">
+        </div>
+
+        <div class="weather-details">
+          <div class="detail-item">
+            <mat-icon>thermostat</mat-icon>
+            <span>{{ weatherData.temperature }}°C</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>cloud</mat-icon>
+            <span>{{ weatherData.condition }}</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>water_drop</mat-icon>
+            <span>Humidity: {{ weatherData.humidity }}%</span>
+          </div>
+          <div class="detail-item">
+            <mat-icon>air</mat-icon>
+            <span>Wind: {{ weatherData.windSpeed }} km/h</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div> 
